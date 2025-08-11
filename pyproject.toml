@@ -1,0 +1,31 @@
+[project]
+name = "rnaprobes"
+description = "Source files for modeling RNA Probes"
+version = "0.0.1"
+authors = [
+    {name = "Irina Catrina"},
+    {name = "Avi Kohn"},
+]
+requires-python = ">= 3.9" # At least Python 3.9, may be able to do lower
+readme = "README.md"
+dependencies = [
+    "Bio",
+    "pandas"
+]
+license = "GPL-3.0-or-later"
+
+[tool.poetry]
+package-mode = false
+#packages = [
+#    { include = "PinMol" },
+#    { include = "smFISH" },
+#    { include = "TFOFinder" }
+#]
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
