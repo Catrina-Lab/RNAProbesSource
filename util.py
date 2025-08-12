@@ -233,4 +233,4 @@ def print_style(msg, *colors):
     print("".join(_Colors[color.upper()] for color in colors) + msg + _Colors['ENDC'])
 
 if __name__ == "__main__":
-    print("Debug")
+    print("Debug") #debug
