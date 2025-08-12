@@ -17,7 +17,7 @@ from typing import IO
 
 from pandas._typing import WriteBuffer
 
-from rnaprobes.util import remove_files, ValidationError
+from .util import remove_files, ValidationError
 
 match = ["ENERGY", "dG"] #find header rows in ct file
 

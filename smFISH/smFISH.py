@@ -10,10 +10,10 @@ import math
 from pathlib import Path
 from pandas import DataFrame, Series
 
-from rnaprobes.RNASuiteUtil import run_command_line, ProgramObject
-from rnaprobes.RNAUtil import RNAStructureWrapper
-from rnaprobes.smFISH.ReverseDijkstra import ReverseDijkstra
-from rnaprobes.util import path_string, path_arg, input_bool, validate_arg, parse_file_input, input_path_string
+from ..RNASuiteUtil import run_command_line, ProgramObject
+from ..RNAUtil import RNAStructureWrapper
+from ..smFISH.ReverseDijkstra import ReverseDijkstra
+from ..util import path_string, path_arg, input_bool, validate_arg, parse_file_input, input_path_string
 
 undscr = ("->" * 40) + "\n"
 copyright_msg = (("\n" * 6) +

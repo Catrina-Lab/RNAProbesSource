@@ -10,10 +10,10 @@ from typing import IO
 from Bio.SeqUtils import MeltingTemp as mt
 from pandas import DataFrame
 
-from rnaprobes.RNASuiteUtil import BufferedProgramObject, ProgramObject, run_command_line
-from rnaprobes.util import (path_string, validate_arg, parse_file_input,
+from ..RNASuiteUtil import BufferedProgramObject, ProgramObject, run_command_line
+from ..util import (path_string, validate_arg, parse_file_input,
                       DiscontinuousRange, input_range, validate_doesnt_throw, input_path, input_path_string, path_arg)
-from rnaprobes.RNAUtil import CT_to_sscount_df
+from ..RNAUtil import CT_to_sscount_df
 
 undscr = ("->" * 40)
 copyright_msg = ("\n" * 5) + (" \x1B[3m TFOFinder\x1B[0m  Copyright (C) 2022  Irina E. Catrina\n"

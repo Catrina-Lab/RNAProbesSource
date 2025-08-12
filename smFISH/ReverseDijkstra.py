@@ -1,7 +1,5 @@
 from __future__ import annotations
-from collections.abc import Callable, Iterable, Collection, Sequence, Generator
-
-from pandas import DataFrame
+from collections.abc import Callable, Collection, Generator
 
 
 #reverse dijkstra algorithm for smFISH
