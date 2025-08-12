@@ -50,6 +50,17 @@ poetry run --project RNAProbesSource python -m RNAProbesSource
 
 ---
 
+### Mac
+We use [RNAStructure text interface](http://rna.urmc.rochester.edu/RNAstructure.html) (slightly improved) by Dave Mathews at the University of Rochester.
+This is included for Windows and Linux (64 bit), but must be installed for Mac (for now).
+
+After installing, add the following lines to the .bash_profile or .profile file:
+
+```bash
+export PATH="[RNAstructure_directory]/RNAstructure/exe:$PATH"
+export DATAPATH="[RNAstructure_path]/RNAstructure/data_tables/"
+```
+
 ## Usage
 
 Once installed, you can run the main program:
