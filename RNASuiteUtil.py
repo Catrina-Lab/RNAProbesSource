@@ -11,7 +11,7 @@ from io import UnsupportedOperation
 from pathlib import Path
 import io
 
-import rnaprobes.util
+import rnaprobes.util as util
 from rnaprobes.util import remove_if_exists, ValidationError, safe_remove_tree, is_empty
 
 
