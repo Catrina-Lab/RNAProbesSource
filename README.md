@@ -11,6 +11,7 @@
 - [Installation](#installation)  
   - [Using pip](#using-pip)  
   - [Using Poetry](#Using-Poetry-recommended-for-linux)
+  - [Mac Additions](#Mac-Additions)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -50,7 +51,7 @@ poetry run --project RNAProbesSource python -m RNAProbesSource
 
 ---
 
-### Mac
+### Mac Additions
 We use [RNAStructure text interface](http://rna.urmc.rochester.edu/RNAstructure.html) (slightly improved) by Dave Mathews at the University of Rochester.
 This is included for Windows and Linux (64 bit), but must be installed for Mac (for now).
 
