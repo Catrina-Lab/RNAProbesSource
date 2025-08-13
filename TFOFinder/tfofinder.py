@@ -37,7 +37,7 @@ base_complement = str.maketrans({'A': 'U', 'C': 'G', 'G': 'C', 'U': 'A'})
 
 def validate_arguments(probe_lengths: str, filename="", **ignore) -> dict:
     validate_arg(parse_file_input(filename).suffix == ".ct", "The given file must be a valid .ct file")
-    probe_length_range = validate_doesnt_throw(DiscontinuousRange.template(probeMin, probeMax+1), probe_lengths, msg=f"The probe length is not between {probeMin} and {probeMax} inclusive")
+    probe_length_range = validate_doesnt_throw(DiscontinuousRange.template(probeMin, probeMax+1, True), probe_lengths, msg=f"The probe length is not between {probeMin} and {probeMax} inclusive")
     return {"probe_lengths": probe_length_range}
 
 #todo: add support for sscount csv
@@ -86,7 +86,7 @@ def run(args="", from_command_line = True):
     #                                   msg=f"Enter the length of TFO probe; a number between {probeMin} and {probeMax} inclusive: ",
     #                                   fail_message=f'You must type a number between {probeMin} and {probeMax}, try again: ',
     #                                   initial_value=arguments.probe_length, retry_if_fail=arguments.from_command_line)
-    probe_length = input_range(min=probeMin, max=probeMax + 1,
+    probe_length = input_range(min=probeMin, max=probeMax + 1, force_increasing=True,
                                       msg=f"Enter the length of TFO probe; a number or range between {probeMin} and {probeMax} inclusive: ",
                                       fail_message=f'You must type a number (or a range) between {probeMin} and {probeMax}, try again: ',
                                       initial_value=arguments.probe_length, retry_if_fail=arguments.from_command_line)
@@ -177,7 +177,7 @@ def create_arg_parser():
         description='Triplex-forming oligonucleotide (TFO) target designer for RNA.')
     parser.add_argument("-f", "--file", type=path_string)
     parser.add_argument("-o", "--output-dir", type=functools.partial(path_arg, suffix=""))
-    parser.add_argument("-p", "--probe-length", type=DiscontinuousRange.template(probeMin, probeMax+1),
+    parser.add_argument("-p", "--probe-length", type=DiscontinuousRange.template(probeMin, probeMax+1, True),
                         metavar=f"[{probeMin}-{probeMax}]",
                         help=f'The length range of TFO probes, {probeMin}-{probeMax} inclusive')
     parser.add_argument("-s", "--emit-sscount", action="store_true")
