@@ -12,7 +12,7 @@ dependencies = [
     "Bio",
     "pandas"
 ]
-license = "GPL-3.0-or-later"
+license = "GPL-2.0-only"
 
 [tool.poetry]
 package-mode = false

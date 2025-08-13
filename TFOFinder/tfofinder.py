@@ -10,7 +10,7 @@ from typing import IO
 from Bio.SeqUtils import MeltingTemp as mt
 from pandas import DataFrame
 
-from ..RNASuiteUtil import BufferedProgramObject, ProgramObject, run_command_line
+from ..RNAProbesUtil import BufferedProgramObject, ProgramObject, run_command_line
 from ..util import (path_string, validate_arg, parse_file_input,
                       DiscontinuousRange, input_range, validate_doesnt_throw, input_path, input_path_string, path_arg)
 from ..RNAUtil import CT_to_sscount_df

@@ -5,7 +5,7 @@ from pathlib import Path
 #sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from .PinMol import pinmol
-from .RNASuiteUtil import run_command_line
+from .RNAProbesUtil import run_command_line
 from .TFOFinder import tfofinder
 from .smFISH import smFISH
 from .util import input_value

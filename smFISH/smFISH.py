@@ -11,7 +11,7 @@ import math
 from pathlib import Path
 from pandas import DataFrame, Series
 
-from ..RNASuiteUtil import run_command_line, ProgramObject
+from ..RNAProbesUtil import run_command_line, ProgramObject
 from ..RNAUtil import RNAStructureWrapper, get_ct_nucleotide_length
 from ..smFISH.ReverseDijkstra import ReverseDijkstra
 from ..util import path_string, path_arg, input_bool, validate_arg, parse_file_input, input_path_string, \

@@ -12,7 +12,7 @@ from pathlib import Path
 from Bio.Blast import NCBIXML
 from pandas import DataFrame
 
-from ..RNASuiteUtil import ProgramObject, run_command_line
+from ..RNAProbesUtil import ProgramObject, run_command_line
 from ..util import (input_int_in_range, bounded_int, path_string, path_arg, remove_if_exists,
                       remove_files, validate_arg, validate_range_arg, parse_file_input, ValidationError, input_value,
                       input_path_string, input_path)
