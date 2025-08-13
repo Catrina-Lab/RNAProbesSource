@@ -95,7 +95,7 @@ class ProgramObject:
 
     def reset_buffer(self, rel_path: str):
         path = self.file_path(rel_path)
-        self.file_manager.remove_file(self._format_relative_path(rel_path), path)
+        self.file_manager.remove_file(self.format_relative_path(rel_path), path)
 
 
     def file_path(self, rel_path: str, register=False, register_to_delete=False, is_directory=False) -> Path:
@@ -106,11 +106,11 @@ class ProgramObject:
         :param register: register this file as a ProgramObject file (to be removed if the program fails)
         :return:
         """
-        path = self.output_dir / self._format_relative_path(rel_path)
+        path = self.output_dir / self.format_relative_path(rel_path)
         if register: self.register_file(rel_path, true_path=path, is_directory=is_directory, register_to_delete=register_to_delete)
         return path
 
-    def _format_relative_path(self, rel_path: str) -> str:
+    def format_relative_path(self, rel_path: str) -> str:
         return rel_path.replace("[fname]", self.file_stem)
 
     def create_dir(self, rel_path: str, register=True):
@@ -118,7 +118,7 @@ class ProgramObject:
         path.mkdir(parents=True, exist_ok=True)
 
     def register_file(self, rel_path: str, true_path: Path = None, register_to_delete: bool = False, is_directory: bool=False):
-        self.file_manager.add_file(rel_path=self._format_relative_path(rel_path), path=true_path or self.file_path(rel_path),
+        self.file_manager.add_file(rel_path=self.format_relative_path(rel_path), path=true_path or self.file_path(rel_path),
                                    delete_when_clean=register_to_delete, is_directory=is_directory)
     def register_to_delete(self, rel_path: str = None, true_path: Path = None):
         self.file_manager.add_to_delete(path=true_path or self.file_path(rel_path))
@@ -170,7 +170,7 @@ class BufferedProgramObject(ProgramObject):
         :param is_string: True if using StringIO, false for BytesIO
         :return:
         """
-        path = Path(self._format_relative_path(rel_path))
+        path = Path(self.format_relative_path(rel_path))
         return self.buffer_dict.setdefault(path, UnclosableStringIO() if is_string else UnclosableBytesIO()) #test
 
     def open_buffer(self, rel_path: str, mode = "w", register_to_delete=True):
@@ -186,7 +186,7 @@ class BufferedProgramObject(ProgramObject):
         return buffer
 
     def reset_buffer(self, rel_path: str):
-        path = self._format_relative_path(rel_path)
+        path = self.format_relative_path(rel_path)
         if path in self.buffer_dict:
             self.buffer_dict[path].reset()
         if path in self.file_manager.get_files():

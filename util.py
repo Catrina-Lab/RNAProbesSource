@@ -6,6 +6,7 @@ import shutil
 import zipfile
 from collections import namedtuple
 from collections.abc import Callable
+from datetime import timedelta
 from pathlib import Path
 import argparse
 import os
@@ -249,6 +250,22 @@ def read_lines_reversed(file: IO[bytes]):
     file.seek(0, os.SEEK_SET)
     yield file.readline().decode().rstrip('\n')
 
+def format_timedelta(td: timedelta, include_seconds : bool= True) -> str:
+    total_seconds = int(td.total_seconds())
+    days, remainder = divmod(total_seconds, 60 * 60 * 24)   # 86400 seconds in a day
+    hours, remainder = divmod(remainder, 60 * 60)       # 3600 seconds in an hour
+    minutes, seconds = divmod(remainder, 60)
+
+    parts = []
+    if days: parts.append(f"{days} day{'s' if days != 1 else ''}")
+    if hours: parts.append(f"{hours} hour{'s' if hours != 1 else ''}")
+    if minutes: parts.append(f"{minutes} minute{'s' if minutes != 1 else ''}")
+    if seconds and include_seconds: parts.append(f"{seconds} second{'s' if seconds != 1 else ''}")
+
+    if not parts: parts.append("0 seconds" if include_seconds else "0 minutes")
+
+    return ", ".join(parts)
+
 _Colors = dict(
     RED='\033[91m',
     YELLOW = '\033[93m',
@@ -268,4 +285,9 @@ def print_style(msg, *colors):
     print("".join(_Colors[color.upper()] for color in colors) + msg + _Colors['ENDC'])
 
 if __name__ == "__main__":
-    print("Debug") #debug
+    print("Util should not be ran unless debugging")
+    def get_lines_r(f):
+        with open(f, "rb") as file:
+            print(list(read_lines_reversed(file)))
+
+    print("Debug") #place breakpoint here
