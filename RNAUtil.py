@@ -17,7 +17,7 @@ from typing import IO
 
 from pandas._typing import WriteBuffer
 
-from .util import remove_files, ValidationError
+from .util import remove_files, ValidationError, read_lines_reversed
 
 match = ["ENERGY", "dG"] #find header rows in ct file
 
@@ -64,6 +64,17 @@ def getSSCountDF(ct_dataframe : DataFrame, save_to_file: bool = None, output_fil
     if save_to_file:
         df_grouped.to_csv(output_file, index=False, header=False)
     return df_grouped
+
+def get_ct_nucleotide_length(file: str | Path) -> int:
+    attempt = 0
+    with open(file, 'rb') as f:
+        for line in read_lines_reversed(f):
+            try:
+                attempt+=1
+                if attempt >= 10: raise ValidationError("Can't find CT nucleotide length")
+                return int(line.lstrip().split(" ", 1)[0])
+            except ValueError:
+                pass #try next line, for newlines
 
 def _map_all(path_mapper: Callable[[str], Path | str], *files: str | Path) -> tuple[Path | str, ...]:
     return tuple((path_mapper(file) if isinstance(file, str) else file) for file in files)
@@ -159,3 +170,7 @@ class RNAStructureWrapper:
             return energy_values
         finally:
             remove_files(file_out)
+
+
+if __name__ == "__main__":
+    print("debug")
