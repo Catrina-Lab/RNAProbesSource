@@ -17,6 +17,15 @@
 - [License](#license)
 
 ---
+## Overview
+RNAProbes consists of 3 programs: smFISH, TFOFinder, and PinMol.
+ - TFOFinder: Designs triplex-forming oligonucleotides (TFO) probes.
+ - smFISH: Designs molecular beacons for live cell imaging of mRNA targets.
+ - PinMol: For designing probes for single-molecule fluorescence in situ hybridization (smFISH), taking into consideration target structure.
+
+There are two ways to run the programs:
+1. A webapp located, in the [main repository](https://github.com/Catrina-Lab/RNAProbes)
+2. CLI tools singled out here for easy use
 
 ## Installation
 
@@ -96,7 +105,7 @@ Pull requests should include:
 
 ## License
 
-GNU GPL 3.0
+GNU GPL v2
 
 ---
 

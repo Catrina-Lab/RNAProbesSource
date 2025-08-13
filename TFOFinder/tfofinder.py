@@ -19,7 +19,7 @@ undscr = ("->" * 40)
 copyright_msg = ("\n" * 5) + (" \x1B[3m TFOFinder\x1B[0m  Copyright (C) 2022  Irina E. Catrina\n"
       "This program comes with ABSOLUTELY NO WARRANTY;\n"
       "This is free software, and you are welcome to redistribute it\n"
-      "under certain conditions; for details please read the GNU_GPL.txt file.\n\n"
+      "under certain conditions; for details please read the LICENSE.txt file.\n\n"
       "Feel free to use the CLI or to run the program directly with command line arguments \n"
       "(view available arguments with --help).\n\n"
       f"{undscr}\n\n"
