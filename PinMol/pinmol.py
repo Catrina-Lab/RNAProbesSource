@@ -18,18 +18,9 @@ from ..util import (input_int_in_range, bounded_int, path_string, path_arg, remo
                       input_path_string, input_path)
 from ..RNAUtil import CT_to_sscount_df, RNAStructureWrapper
 
-probeMin = 18
-probeMax = 26
-probesToSaveMin = 2
-probesToSaveMax = 50
-
-exported_values = {"probeMin": probeMin, "probeMax": probeMax, "probesToSaveMin": probesToSaveMin, "probesToSaveMax": probesToSaveMax}
-
-svg_dir_name = "[fname]_svg_files"
-
 undscr = ("->" * 40) + "\n"
 copyright_msg = (("\n" * 6) +
-      f'PinMol Copyright (C) 2017  Irina E. Catrina\n' +
+      f'PinMol Copyright (C) 2025 Avi Kohn, 2017  Irina E. Catrina\n' +
       'This program comes with ABSOLUTELY NO WARRANTY;\n' +
       'This is free software, and you are welcome to redistribute it\n' +
       'under certain conditions; for details please read the LICENSE.txt file.\n\n' +
@@ -40,6 +31,15 @@ copyright_msg = (("\n" * 6) +
       "different location than the current file, or rename them to \n"+
       "ensure they are not misused (e.g. use probes from a different target).\n" +
       undscr)
+
+probeMin = 18
+probeMax = 26
+probesToSaveMin = 2
+probesToSaveMax = 50
+
+exported_values = {"probeMin": probeMin, "probeMax": probeMax, "probesToSaveMin": probesToSaveMin, "probesToSaveMax": probesToSaveMax}
+
+svg_dir_name = "[fname]_svg_files"
 
 match = ["ENERGY", "dG"]  # find header rows in ct file
 

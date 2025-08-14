@@ -19,7 +19,7 @@ from ..util import path_string, path_arg, input_bool, validate_arg, parse_file_i
 
 undscr = ("->" * 40) + "\n"
 copyright_msg = (("\n" * 6) +
-          f'smFISH_HybEff program  Copyright (C) 2022  Irina E. Catrina\n' +
+          f'smFISH_HybEff program  Copyright (C) 2025 Avi Kohn, 2022  Irina E. Catrina\n' +
           'This program comes with ABSOLUTELY NO WARRANTY;\n' +
           'This is free software, and you are welcome to redistribute it\n' +
           'under certain conditions; for details please read the LICENSE.txt file.\n\n' +
