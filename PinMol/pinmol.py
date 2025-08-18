@@ -91,7 +91,7 @@ def run(args: str | list="", from_command_line: bool = True):
     calculate_result(open(file_name, "r"), probe_length, file_name, arguments)
 
     if should_print(arguments):
-        print("\n" + "This information can be also be found in the file Final_molecular_beacons.csv" + "\n")
+        print("\n" + "This information can be also be found in the file Final_molecular_beacons.txt" + "\n")
         print(
             "\n" + "Check the structure for the selected probes using your favorite browser by opening the corresponding SVG files!")
         print("\n" + "If no SVG files are found, increase the number of probes and/or target region!")
@@ -104,7 +104,7 @@ def run(args: str | list="", from_command_line: bool = True):
 
 def write_result_string(program_object: ProgramObject, arguments: Namespace):
     result_str = get_result_string(program_object.result_obj)
-    with program_object.open_buffer(f"[fname]_Final_molecular_beacons.csv", "a") as add_output:
+    with program_object.open_buffer(f"[fname]_Final_molecular_beacons.txt", "a") as add_output:
         add_output.write(result_str)
     if should_print(arguments):
         print(result_str)
@@ -305,9 +305,9 @@ def calculate_beacons(mb_pick: DataFrame, probe_length: int, program_object: Pro
 
 def initialize_molecular_beacon_file(program_object):
     if program_object.get_arg("overwrite"):
-        program_object.reset_buffer(f"[fname]_Final_molecular_beacons.csv")
+        program_object.reset_buffer(f"[fname]_Final_molecular_beacons.txt")
 
-    with program_object.open_buffer(f"[fname]_Final_molecular_beacons.csv", "a") as file:
+    with program_object.open_buffer(f"[fname]_Final_molecular_beacons.txt", "a") as file:
         file.write('Beacons marked with a "*" are too structured or show a high degree of self-complementarity, and therefore have no svg file.\n')
 
 def design_beacon(mb_picks: DataFrame, index: int, probe_length: int, program_object: ProgramObject): #design the stem of the final probes
@@ -430,7 +430,7 @@ def save_beacon(index: int, mb_picks: DataFrame, beacon: str, program_object: Pr
 
     aseq = f"{'' if has_svg else '*'}{index + 1} MB sequence at base number {baseNum} is:  {beacon}"
     if should_print(program_object): print(aseq + '\n')
-    with program_object.open_buffer(f"[fname]_Final_molecular_beacons.csv", "a") as outputf:
+    with program_object.open_buffer(f"[fname]_Final_molecular_beacons.txt", "a") as outputf:
         outputf.write(aseq + '\n')
 
 argument_parser = None
