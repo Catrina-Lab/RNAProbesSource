@@ -129,7 +129,7 @@ def get_GC_probes(sscount_df, probe_length, structure_count, program_object: Pro
     program_object.set_result_args(region_probes = probes_df, len_GC_probes = len(GC_probes),
                                    tg_start = tg_start , tg_end=tg_end)
     #probes_df.to_csv(program_object.save_buffer("[fname]_all_probes_sorted_ss.csv"), index=False)
-    GC_probes.to_csv(program_object.save_buffer("[fname]_GC_probes.csv"), index=False)
+    GC_probes.to_csv(program_object.save_buffer("[fname]_GC_bounded_probes.csv"), index=False)
     return GC_probes
 
 def region_probes(sscount_df: DataFrame, probe_length: int, structure_count: int, arguments: Namespace) -> tuple[DataFrame, int, int]:
@@ -200,7 +200,7 @@ def get_DG_probes(GC_probes: DataFrame, read_oligosc: DataFrame,  program_object
     if probesToSaveMax > row_no and should_print(program_object, True): print("Only "+str(row_no)+" meet the criteria.  Instead of "+ str(probesToSaveMax)+", " + str(row_no)+ " probe(s) will be considered")
 
     DG_probes = data_sorted[:probesToSaveMax] #limit the length of the list
-    DG_probes.to_csv(program_object.save_buffer("[fname]_DG_probes.csv"), index=False)
+    DG_probes.to_csv(program_object.save_buffer("[fname]_best_probes.csv"), index=False)
 
     program_object.set_result_args(len_DG_probes = len(DG_probes), max_valid_probes = row_no)
 
@@ -214,7 +214,7 @@ def get_data_sorted(GC_probes: DataFrame, read_oligosc: DataFrame, program_objec
     data_sorted = data_filter.sort_values(['sscount', 'DGunimolecular', 'DGbimolecular', '%GC', 'DGduplex'],
                                           ascending=[False, False, False, False, True], ignore_index=True,
                                           kind="stable")  # sort descending by sscount = larger sscount more accessible target region
-    data_sorted.to_csv(program_object.save_buffer("[fname]_probes_sortedby5.csv"), index=False)
+    data_sorted.to_csv(program_object.save_buffer("[fname]_all_probes_sortedby5.csv"), index=False)
     # determine the total number of probes that meet the eg criteria for the selected target (region or full)
     program_object.validate(len(data_sorted) > 0, "No probes meet the criteria for the selected region, please expand the search region or choose a shorter probe length.")
 

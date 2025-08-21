@@ -54,19 +54,17 @@ GAS_CONSTANT = 0.001987
 TEMP_K = 310.15 #37 C or 98.6 F
 # so there's a limit on what a webserver will allow
 IS_WEBAPP = os.environ.get("IS_WEB_APP")
-MAX_WEBAPP_FILE_SIZE = 2 * 1000 * 1000 if IS_WEBAPP else 20 * 1000 * 1000 #alg is n^3, so is 1000 larger so basically infinite (if larger, won't even run)
 MAX_WEBAPP_NUC_LENGTH = 4 * 1000 if IS_WEBAPP else 50 * 1000 #if > 50k, will take ~10 hours
 
 
 COLS_TO_SAVE = ('Pos', "Oligo(5'->3')", 'Overall (kcal/mol)', 'Tm-Dup (degC)', 'Hybeff', 'fGC')
 #endregion
 
-exported_values = dict(maxWebappSize=MAX_WEBAPP_FILE_SIZE) #max file size: 2mb if web app. OligoWalk is O(n^3) and bifold is also bad,
+exported_values = dict(maxWebappLength=MAX_WEBAPP_NUC_LENGTH) #max file size: 2mb if web app. OligoWalk is O(n^3) and bifold is also bad,
 
 def validate_arguments(file_path: Path, arguments: Namespace, **ignore) -> dict:
     validate_arg(parse_file_input(file_path).suffix == ".ct", "The given file must be a valid .ct file")
     validate_arg(Path(file_path).exists(), msg="The ct file must exist")
-    validate_arg(os.path.getsize(file_path) < MAX_WEBAPP_FILE_SIZE, f"The CT file must be below {MAX_WEBAPP_FILE_SIZE / 1000 / 1000} MB {'when using a webapp' if IS_WEBAPP else 'when running the program'}")
     nuc_length = validate_doesnt_throw(get_ct_nucleotide_length, file_path, msg="The given CT file is invalid. Can't read the CT file.")
     validate_arg(nuc_length < MAX_WEBAPP_NUC_LENGTH, f"The RNA length must be below {MAX_WEBAPP_NUC_LENGTH} nucleotides "
                                                                               f"{'when using a webapp. Feel free to run the program, downloaded through our GitHub repository, on your own system' if IS_WEBAPP else 'when running the program. Feel free to change it manually, but it may take incredibly long'}")
@@ -171,7 +169,7 @@ def get_best_possible_probe_set(filein, program_object: ProgramObject) -> DataFr
 
 def get_best_probes(df: DataFrame, program_object: ProgramObject, count=PROBE_RETURN_COUNT) -> DataFrame:
     probes = df.sort_values(["Hybeff"], ignore_index=True, kind="stable").head(count)
-    probes.to_csv(program_object.save_buffer(f"[fname]_best_{count}_probes.csv"), index=False, float_format=f'%.{PRECISION}10g')
+    probes.to_csv(program_object.save_buffer(f"[fname]_best_{count}_probes.csv"), index=False, float_format=f'%.{PRECISION}g')
     if should_print(program_object.arguments): print(f"{len(df)} probes found." + (f" Choosing the best {count}" if len(df) > count else ""))
     return probes
 
