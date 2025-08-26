@@ -10,6 +10,7 @@ from collections.abc import Callable
 from io import UnsupportedOperation
 from pathlib import Path
 import io
+from typing import IO
 
 from . import util
 from .util import remove_if_exists, ValidationError, safe_remove_tree, is_empty
@@ -58,7 +59,7 @@ class FileManager:
             if file.is_dir():
                 directories.add(file)
             else:
-                directories.add(file.parent)
+                if file.parent != self.output_dir: directories.add(file.parent)
                 remove_if_exists(file)
 
         for directory in directories:
@@ -83,7 +84,7 @@ class ProgramObject:
         self.register_file(rel_path, register_to_delete=register_to_delete)
         return self.file_path(rel_path) #test
 
-    def open_buffer(self, rel_path: str, mode = "w", register_to_delete=True):
+    def open_buffer(self, rel_path: str, mode = "w", register_to_delete=True) -> IO:
         """
         Buffer used to mock the open() method
         :param rel_path:
@@ -181,7 +182,7 @@ class BufferedProgramObject(ProgramObject):
         :return:
         """
         if "w" in mode: self.reset_buffer(rel_path)
-        buffer = self.save_buffer(rel_path)
+        buffer = self.save_buffer(rel_path, not ('b' in mode))
         if not "a" in mode: buffer.seek(0)
         return buffer
 

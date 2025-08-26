@@ -1,8 +1,12 @@
 #!/anaconda/bin/python3
 from __future__ import annotations
 import argparse
+import io
+import os
 from argparse import Namespace
 import sys
+from http.client import HTTPResponse
+from tempfile import SpooledTemporaryFile
 from typing import IO
 
 import pandas as pd
@@ -10,12 +14,14 @@ from Bio.SeqUtils import MeltingTemp as mt
 import shlex
 from pathlib import Path
 from Bio.Blast import NCBIXML
+from Bio import Blast
 from pandas import DataFrame
 
 from ..RNAProbesUtil import ProgramObject, run_command_line
 from ..util import (input_int_in_range, bounded_int, path_string, path_arg, remove_if_exists,
-                      remove_files, validate_arg, validate_range_arg, parse_file_input, ValidationError, input_value,
-                      input_path_string, input_path)
+                    remove_files, validate_arg, validate_range_arg, parse_file_input, ValidationError, input_value,
+                    input_path_string, input_path, email_arg, input_bool, input_email, input_value_set,
+                    validate_doesnt_throw, value_set_arg, value_set_mapper)
 from ..RNAUtil import CT_to_sscount_df, RNAStructureWrapper
 
 undscr = ("->" * 40) + "\n"
@@ -36,23 +42,48 @@ probeMin = 18
 probeMax = 26
 probesToSaveMin = 2
 probesToSaveMax = 50
+valid_blast_databases = ["refseq_rna", "nr", "nt"]
 
-exported_values = {"probeMin": probeMin, "probeMax": probeMax, "probesToSaveMin": probesToSaveMin, "probesToSaveMax": probesToSaveMax}
+exported_values = {"probeMin": probeMin, "probeMax": probeMax, "probesToSaveMin": probesToSaveMin, "probesToSaveMax": probesToSaveMax, 'validBlastDatabases': valid_blast_databases}
 
 svg_dir_name = "[fname]_svg_files"
 
 match = ["ENERGY", "dG"]  # find header rows in ct file
 
+BLAST_FILE_STREAM = 'stream'
+IS_WEBAPP = os.environ.get("IS_WEB_APP")
+MAX_TX_ID = 3456255
 
-def validate_arguments(probe_length: int, filename: str, arguments: Namespace, **ignore) -> dict:
+def validate_arguments(probe_length: int, filename: str, arguments: Namespace, blast_file_stream: IO[bytes] = None, **ignore) -> dict:
     validate_arg(parse_file_input(filename).suffix == ".ct", "The given file must be a valid .ct file")
     validate_range_arg(probe_length, probeMin, probeMax + 1, "probe length")
     validate_range_arg(arguments.start, min=1, name="start base")
     validate_range_arg(arguments.end, min=arguments.start + probe_length, name="end base", extra_predicate=lambda x: x == -1)
+    validate_blast_arguments(arguments, blast_file_stream)
     return {}
 
-def calculate_result(filein: IO[str], probe_length: int, filename: str, arguments: Namespace, output_dir: Path = None):
+def validate_blast_arguments(arguments: Namespace, blast_file_stream: IO[bytes] = None):
+    if IS_WEBAPP:
+        validate_arg(not arguments.run_blast, "You can't run blast when using the webserver, input an XML file instead!")
+    if not blast_file_stream:
+        validate_arg(arguments.blast_file != BLAST_FILE_STREAM,
+                     "Must input a stream if arguments.blast_file denotes a stream!")
+    # else:
+    #     validate_arg(arguments.blast_file == BLAST_FILE_STREAM, "Can't input a blast file path if using a stream! To use a stream, make sure that the command line argument to blast_file is set to -bf with no content. "
+    #                                                             "This tells the program that you want to use a blast file stream, instead of defaulting to no blast")
+
+    if arguments.run_blast:
+        validate_arg(arguments.email is not None, "Must include an email if running blast as required by NCBI guidelines")
+        validate_doesnt_throw(email_arg,arguments.email, msg="Invalid email")
+        validate_doesnt_throw(value_set_mapper,  arguments.database, *valid_blast_databases, case_sensitive=False, number=True, msg="Invalid database. Must be one of either: " + ", ".join(valid_blast_databases))
+        validate_range_arg(arguments.tax_id, 1, MAX_TX_ID+1, overwrite_msg="Invalid txid", extra_predicate=lambda x: x== -1)
+
+    validate_arg(not (bool(arguments.run_blast) and bool(arguments.blast_file)), "Cannot both run with blast and include a blast file")
+
+
+def calculate_result(filein: IO[str], probe_length: int, filename: str, arguments: Namespace, blast_file_stream: IO[bytes] = None, output_dir: Path = None):
     output, stem, _ =  parse_file_input(filename, output_dir or arguments.output_dir)
+    if blast_file_stream: arguments.blast_file = blast_file_stream
     program_object = ProgramObject(output, stem, arguments, file_name = filename, probe_length=probe_length)
     with filein as file:
         sscount_df, structure_count = CT_to_sscount_df(file, True,  program_object.save_buffer(f"[fname]_sscount.csv"))
@@ -65,7 +96,7 @@ def calculate_result(filein: IO[str], probe_length: int, filename: str, argument
 
     # write the fasta file containing the final sequences for blast
     save_to_fasta(DG_probes["Probe Sequence"], program_object)
-    DG_probes_sorted = try_run_blast(DG_probes, probe_length, program_object)
+    DG_probes_sorted = try_use_blast(DG_probes, probe_length, program_object)
 
     
     calculate_beacons(DG_probes_sorted[["Base Number", "Probe Sequence"]].copy(), probe_length, program_object)
@@ -74,8 +105,10 @@ def calculate_result(filein: IO[str], probe_length: int, filename: str, argument
     return program_object
 
 def parse_arguments(args: list | str, from_command_line = True):
-    args = get_argument_parser().parse_args(args if isinstance(args, list) else shlex.split(args))
+    parser = get_argument_parser()
+    args = parser.parse_args(args if isinstance(args, list) else shlex.split(args))
     args.from_command_line = from_command_line  # denotes that this is from the command line
+    verify_and_modify_parse_args(args, parser)
     return args
 
 def run(args: str | list="", from_command_line: bool = True):
@@ -223,17 +256,21 @@ def get_data_sorted(GC_probes: DataFrame, read_oligosc: DataFrame, program_objec
 def save_to_fasta(probes: pd.Series, program_object: ProgramObject) -> None:
     with program_object.open_buffer("[fname]_blast_picks.fasta", 'w') as f1:
         output_str = ">\n" + "\n>\n".join(probes)
+        program_object.set_result_args(fasta_output = output_str)
         f1.write(output_str)
 
-def try_run_blast(DG_probes: DataFrame, probe_length: int, program_object: ProgramObject) -> DataFrame:
+def try_use_blast(DG_probes: DataFrame, probe_length: int, program_object: ProgramObject) -> DataFrame:
     arguments = program_object.arguments
+    #todo: change blast workings
     blast_default = None if arguments.from_command_line else "n" #default value if not from cmd_line
-    program_object.set_result_args(blastm = arguments.blast or arguments.no_blast
-                                            or blast_default or input('Do you want to use blast alignment information to determine cross homology? y/n: '))
-    return run_blast(DG_probes, probe_length, program_object) if program_object.get_result_arg("blastm") == "y" else DG_probes
+    cmd_line_blast = 'y' if arguments.blast_file or arguments.run_blast else None
+    program_object.set_result_args(blastm =
+                                   cmd_line_blast or arguments.no_blast
+                                     or ('y' if input_bool(msg='Do you want to use blast alignment information to determine cross homology? y/n: ', initial_value=blast_default) else "n"))
+    return use_blast(DG_probes, probe_length, program_object) if program_object.get_result_arg("blastm") == "y" else DG_probes
 
-def run_blast(DG_probes: DataFrame, probe_length: int, program_object: ProgramObject) -> DataFrame:
-    blast_results = parse_blast_file(DG_probes, probe_length, program_object)
+def use_blast(DG_probes: DataFrame, probe_length: int, program_object: ProgramObject) -> DataFrame:
+    blast_results = get_blast_results(DG_probes, probe_length, program_object)
 
     df_grouped = blast_results.groupby(['Pick#']).agg({'Positives': 'max'})
     df_grouped = df_grouped.reset_index()
@@ -247,23 +284,64 @@ def run_blast(DG_probes: DataFrame, probe_length: int, program_object: ProgramOb
 
     picks_sorted = picks_sorted.sort_values(['Positives', 'Pick#'], ascending=[True, True], ignore_index=True,
                                             kind="stable")  # stable so the result is the same as long as inputs are identical
-    picks_sorted.to_csv(program_object.save_buffer("[fname]_Picks_Sorted.csv"), index=False)
+    #picks_sorted.to_csv(program_object.save_buffer("[fname]_Picks_Sorted.csv"), index=False)
     return picks_sorted
 
-def parse_blast_file(DG_probes: DataFrame, probe_length: int, program_object: ProgramObject = None): #perform blast separately
+def run_blast_prep(program_object: ProgramObject) -> IO[bytes]:
+    """
+    Run blast, getting the correct arguments here. Make sure to run in a with clause in order to close the resulting file
+    :param program_object:
+    :return:
+    """
     arguments = program_object.arguments
-    program_object.validate(arguments.from_command_line or arguments.blast_file, "You must include an xml blast file if considering blast!")
-    if should_print(arguments): print("\n"*2+'Please use the file blast_picks.fasta to perform blast with refseq-rna database, and desired organism.\n For targets other than mRNAs make sure you use the Nucleotide collection (nr/nt) instead!')
-    save_file = input_path(".xml", msg='Enter path and file name for your existing blast XML file: ',
-                            fail_message='Your file is invalid (either does not exist or is not an xml file). Please enter the path and file name for your existing blast XML file: ',
-                            initial_value=arguments.blast_file,
-                            retry_if_fail=arguments.from_command_line)
+    email = input_email("Input a valid email to use in BLAST (required by the NCBI guidelines): ",
+                        initial_value=arguments.email, retry_if_fail=arguments.from_command_line)
+    database = input_value_set(*valid_blast_databases, msg="Input a valid database. Can use refseq_rna (1) for mRNAs, or nr (2) or nt (3) for non-mRNAs: ",
+                               case_sensitive=False, number=True, initial_value=arguments.database,retry_if_fail=arguments.from_command_line)
+    tax_id = input_int_in_range(1, MAX_TX_ID+1, msg="Input a valid tax ID for BLAST (find at https://blast.ncbi.nlm.nih.gov/Blast.cgi), or -1 to skip this: ",
+                                fail_message="Please input a valid tax ID, or -1 to skip. A tax ID is a number greater than 0 (MAX_TX_ID at max): ",
+                                extra_predicate=lambda x: x==-1,
+                                initial_value=arguments.tax_id, retry_if_fail=arguments.from_command_line)
+    result = run_blast(program_object, email, database, None if tax_id == -1 else tax_id)
+    xml_file = program_object.open_buffer("[fname]_blast_result.xml", "w+b")
+    xml_file.write(result)
+    xml_file.seek(0)
+    return xml_file
 
+def run_blast(program_object: ProgramObject, email: str, database="refseq_rna", organism_id=None) -> bytes:
+    Blast.email = email
+    if should_print(program_object.arguments): print(f"Running blast with parameters: email={email}, database={database}, organism tax ID={organism_id}. This might take a while.")
+    result_stream : HTTPResponse = Blast.qblast("blastn", database, program_object.get_result_arg("fasta_output"), megablast=False,
+                               entrez_query=f"txid{organism_id}[ORGN]" if organism_id else "", expect=1000, word_size=7, nucl_reward=1, nucl_penalty=-3,
+                                                filter="F", db_genetic_code=1, hitlist_size=100)
+    return result_stream.read()
+
+def run_blast_from_file(program_object: ProgramObject):
+    arguments = program_object.arguments
+    if isinstance(arguments.blast_file, io.IOBase) or isinstance(arguments.blast_file, SpooledTemporaryFile): return arguments.blast_file
+
+    if should_print(arguments) and not (arguments.blast_file and Path(arguments.blast_file).exists() and Path(arguments.blast_file).suffix == '.xml'): print("\n"*2+'Please use the file blast_picks.fasta to perform blast with refseq-rna database, and desired organism.\n For targets other than mRNAs make sure you use the Nucleotide collection (nr/nt) instead!')
+    save_file = input_path(".xml", msg='Enter path and file name for your existing blast XML file: ',
+                           fail_message='Your file is invalid (either does not exist or is not an xml file). Please enter the path and file name for your existing blast XML file: ',
+                           initial_value=arguments.blast_file,
+                           retry_if_fail=arguments.from_command_line)
+    return open(save_file, 'rb')
+
+def get_blast_xml_file(program_object: ProgramObject) -> IO[bytes]:
+    arguments = program_object.arguments
+    program_object.validate(arguments.from_command_line or arguments.blast_file or arguments.run_blast, "You must include an xml blast file if considering blast!")
+    initial_value = "yes" if arguments.blast_file else ('no' if arguments.run_blast else None)
+    use_existing = input_bool(msg="Would you like to use an existing blast file? Otherwise, you can run blast here.",
+                              initial_value=initial_value, map_initial_value=True, retry_if_fail=arguments.from_command_line)
+
+    return run_blast_from_file(program_object) if use_existing else run_blast_prep(program_object)
+
+def get_blast_results(DG_probes: DataFrame, probe_length: int, program_object: ProgramObject = None): #perform blast separately
     pick = 0
     first_query = None
     temp_df = []
     query1 = []
-    with open(save_file, 'r') as xml_file:
+    with get_blast_xml_file(program_object) as xml_file:
         records = NCBIXML.parse(xml_file)
         for record in records:
             pick +=1
@@ -449,7 +527,6 @@ def create_arg_parser():
     parser.add_argument("-p", "--probes", type=functools.partial(bounded_int, min=probeMin, max=probeMax),
                         metavar=f"[{probeMin}-{probeMax}]",
                         help=f'The length of PinMol probes, {probeMin}-{probeMax} inclusive')
-    # parser.add_argument("-s", "--skip-save-sscount", action="store_false")
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-q", "--quiet", action="store_true")
     parser.add_argument("-w", "--overwrite", action="store_true",
@@ -457,16 +534,36 @@ def create_arg_parser():
     parser.add_argument("-s", "--start", type=int, help="The start base to look for probs, min 1")
     parser.add_argument("-e", "--end", type=int,
                         help="The start base to look for probs, must be greater than start (use -1 for the entire sequence)")
-    parser.add_argument("-bf", "--blast-file", type=functools.partial(path_arg, suffix=".xml"))
 
     arg_group = parser.add_argument_group('Blast Alignment',
                                           'Blast alignment command line settings. If none given, will ask')
+
     group = arg_group.add_mutually_exclusive_group()
-    group.add_argument("-b", "--blast", action="store_const", const="y",
-                       help="Use blast alignment information to determine cross homology.")
     group.add_argument("-nb", "--no-blast", action="store_const", const="n",
                        help="Don't use blast alignment information to determine cross homology.")
+    group.add_argument("-bf", "--blast-file", nargs="?", const=BLAST_FILE_STREAM, type=functools.partial(path_arg, suffix=".xml"),
+                       help="Run blast using a pre-existing blast file")
+    group.add_argument("-rb", "--run-blast", action="store_true",
+                       help="Run blast during program (extra arguments are needed)")
+
+    run_blast_group = arg_group.add_argument_group('Running blast', 'Command line arguments for running blast during the program.')
+    run_blast_group.add_argument('--email', type=email_arg, help="Email to use with Blast (required by the NCBI guidelines)")
+    run_blast_group.add_argument("-d", '--database', nargs="?", const="refseq_rna",
+                                 type=value_set_arg(*valid_blast_databases, case_sensitive=False, number=True),
+                                 help="The database to run blast with. Default is refseq_rna if command line argument is present, "
+                                                                     "otherwise will ask")
+    run_blast_group.add_argument('-t', "--tax-id", nargs="?", const=-1,
+                                 type=functools.partial(bounded_int, 1, MAX_TX_ID+1, extra_predicate=lambda x: x== -1),
+                                 help="The tax ID of the organism to run blast against, default is none if argument is present. Find it here: https://blast.ncbi.nlm.nih.gov/Blast.cgi")
+
     return parser
+
+def verify_and_modify_parse_args(args: Namespace, parser: argparse.ArgumentParser, on_error =  lambda msg, parser: parser.error(msg)):
+    if args.run_blast and not args.email and not args.from_command_line:
+        on_error(parser, "Must include email (--email) when running blast during the program (--run-blast)")
+
+    if args.blast_file == BLAST_FILE_STREAM and args.from_command_line:
+        on_error(parser, "Must include a blast file if using blast_file from the command line")
 
 def should_print(arguments: Namespace | ProgramObject, is_content_verbose: bool = False):
     if isinstance(arguments, ProgramObject): arguments = arguments.arguments

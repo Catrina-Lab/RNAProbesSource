@@ -1,16 +1,18 @@
 # A collection of utility methods and classes that can be useful in other projects as well
 from __future__ import annotations
+
+import functools
 import io
 import re
 import shutil
 import zipfile
 from collections import namedtuple
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from datetime import timedelta
 from pathlib import Path
 import argparse
 import os
-from typing import IO
+from typing import IO, Collection
 
 
 class ValidationError(Exception):
@@ -129,6 +131,36 @@ def input_path_string(*suffixes: str, msg : str = None, fail_message : str = Non
     msg = msg or f"Input the path to a file. Extension can be: {', '.join(suffixes)}"
     return input_value(msg, fail_message=fail_message, predicate=lambda string: Path(string).exists() and Path(string).suffix in suffixes, initial_value=initial_value, retry_if_fail=retry_if_fail, map_initial_value=map_initial_value)
 
+def input_email(msg : str = None, fail_message : str = None,
+                       initial_value = None, retry_if_fail=True):
+    msg = msg or "Input a valid email"
+    fail_message = fail_message or "Not a valid email. Please input a valid, RFC 5322 compliant email"
+    return input_value(msg, predicate=lambda x: bool(_email_regex.fullmatch(x)), fail_message=fail_message,
+                       initial_value=initial_value, retry_if_fail=retry_if_fail)
+
+def input_value_set(*possible_values: str, msg : str = None, fail_message : str = None,
+                       initial_value = None, retry_if_fail=True, case_sensitive = False, number = False):
+    msg = msg or "Input one of the possible values: " + ", ".join(possible_values)
+    fail_message = fail_message or "Not a valid value. Please input one of these: " + ", ".join(possible_values)
+    cased = possible_values if case_sensitive else [val.lower() for val in possible_values]
+
+    return input_value(msg, mapper=functools.partial(_value_set_mapper, possible_values=possible_values, cased=cased, number=number),
+                       fail_message=fail_message, initial_value=initial_value, retry_if_fail=retry_if_fail)
+
+def _value_set_mapper(value: str, possible_values: Sequence[str], cased: Sequence[str], number = False):
+    if number:
+        try:
+            return possible_values[int(value) - 1]
+        except (ValueError, IndexError):
+            pass #use default mapping
+    return possible_values[cased.index(value.lower())] #might throw, but that's intentional to consider it a fail
+
+def safe_index(lst: list, value, fail_value = -1) -> int:
+    try:
+        return lst.index(value)
+    except ValueError:
+        return fail_value
+
 def remove_files(*files):
     for file in files:
         remove_if_exists(file)
@@ -188,13 +220,14 @@ def optional_argument(request, arg_name: str, cmd_line_name: str = None, default
 def get_or_none(obj, attr):
     return getattr(obj, attr, None)
 
-def bounded_int(string, min=None, max=None):
-       value = int(string)
-       if is_not_below_min(min, value) and is_below_max(max + 1, value):
-           return value
-       else:
-           raise argparse.ArgumentTypeError(
-               f'Value not in range {min or "-∞"}-{max or "∞"}. Please either keep it in range or leave it out.')
+def bounded_int(string, min=None, max=None, extra_predicate=lambda x: False, allow_none = False):
+    if allow_none and string is None: return string
+    value = int(string)
+    if extra_predicate(value) or (is_not_below_min(min, value) and is_below_max(max + 1, value)):
+        return value
+    else:
+        raise argparse.ArgumentTypeError(
+            f'Value not in range {min or "-∞"}-{max or "∞"}. Please either keep it in range or leave it out.')
 
 def path_string(string, suffix=".ct"):
     path = Path(string).resolve()
@@ -209,6 +242,23 @@ def path_arg(string, suffix=".ct"):
         return path
     else:
         raise argparse.ArgumentTypeError(f'Invalid file given. File must be an existing {suffix} file')
+
+_email_regex = re.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
+def email_arg(string, email_regex: re.Pattern = _email_regex):
+    if email_regex.fullmatch(string):
+        return string
+    else:
+        raise argparse.ArgumentTypeError(f"Invalid email. Email is not RFC 5322 compliant.")
+
+def value_set_mapper(string, *values, case_sensitive=False, number=False):
+    cased = values if case_sensitive else [val.lower() for val in values]
+    try:
+        return _value_set_mapper(string, values, cased, number)
+    except Exception as e:
+        raise argparse.ArgumentTypeError(f"Invalid value {string}. Must be either: " + ", ".join(values))
+
+def value_set_arg(*values, case_sensitive=False, number=False):
+    return lambda string: value_set_mapper(string, *values, case_sensitive=case_sensitive, number=number)
 
 def get_folder_as_zip(folder_path: Path) -> bytes:
     zip_buffer = io.BytesIO()

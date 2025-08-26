@@ -176,7 +176,6 @@ def get_best_probes(df: DataFrame, program_object: ProgramObject, count=PROBE_RE
 def equilibrium_constant(input):
     return math.e ** (-(input / (GAS_CONSTANT*TEMP_K)))
 
-
 def get_size_warning(length: int):
     if length > 4000:
         estimated_seconds = (10 * 60 / (12000 ** 3) * (length ** 3))
