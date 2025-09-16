@@ -49,7 +49,7 @@ Beacons marked with a "*" are too structured or show a high degree of self-compl
 *48 MB sequence at base number 401 is:  GCACGUGUUGCUGUUGCUGUUGUAGCGUGC
 *49 MB sequence at base number 403 is:  CGCGAGGUGUUGCUGUUGCUGUUGUUCGCG
 *50 MB sequence at base number 402 is:  CGAGCGUGUUGCUGUUGCUGUUGUAGCUCG
-Results for "C:\Users\aviro\Documents\Code\Misc\Summers\Summer 2025 - RNA\Code\RNASuite\src\rnaprobes\tests\test_files\example_large.ct" using 20 as probe length, 
+Results for "example_large.ct" using 20 as probe length,
 for 50 probes, and blast choice = n, and for a target region between 1 and 2869 nucleotides:  
 	1. Total number of possible probes =  2850
 	2. Number of probes that have a GC content between 30% and 56% =  1891

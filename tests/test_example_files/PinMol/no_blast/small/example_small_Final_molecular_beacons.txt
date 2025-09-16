@@ -34,7 +34,7 @@ Beacons marked with a "*" are too structured or show a high degree of self-compl
 33 MB sequence at base number 52 is:  CGACGGGACUUGAACCUUCAUACUGCGUCG
 34 MB sequence at base number 51 is:  CGCGAGACUUGAACCUUCAUACUGUUCGCG
 35 MB sequence at base number 62 is:  CGAGGCUAUUUAAAGGACUUGAACCUCG
-Results for "C:\Users\aviro\Documents\Code\Misc\Summers\Summer 2025 - RNA\Code\RNASuite\src\rnaprobes\tests\test_files\example_small.ct" using 20 as probe length, 
+Results for "example_small.ct" using 20 as probe length,
 for 35 probes, and blast choice = n, and for a target region between 1 and 85 nucleotides:  
 	1. Total number of possible probes =  66
 	2. Number of probes that have a GC content between 30% and 56% =  37
