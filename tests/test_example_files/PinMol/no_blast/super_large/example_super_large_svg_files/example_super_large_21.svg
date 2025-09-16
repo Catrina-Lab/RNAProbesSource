@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" font-family="monospace" font-size="24" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" viewBox="0 0 790 905">
+<g transform="scale(1.66602)">
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M193,476 Q220.5,476 248,476"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M193,445 Q220.5,445 248,445"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M193,414 Q220.5,414 248,414"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M193,383 Q220.5,383 248,383"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M193,352 Q220.5,352 248,352"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M192,257 Q219.5,257 247,257"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M192,226 Q219.5,226 247,226"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M192,195 Q219.5,195 247,195"/>
+<path style="fill:none;stroke-width:3" stroke="rgb(0,0,0)" d="M192,164 Q219.5,164 247,164"/>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="193" y1="476" x2="193" y2="445"/> <circle style="stroke-width:1" cx="193" cy="476" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="185" y="484" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="193" y1="445" x2="193" y2="414"/> <circle style="stroke-width:1" cx="193" cy="445" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="185" y="453" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">C</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="193" y1="414" x2="193" y2="383"/> <circle style="stroke-width:1" cx="193" cy="414" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="185" y="422" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">C</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="193" y1="383" x2="193" y2="352"/> <circle style="stroke-width:1" cx="193" cy="383" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="185" y="391" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="193" y1="352" x2="173" y2="305"/> <circle style="stroke-width:1" cx="193" cy="352" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="185" y="360" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="173" y1="305" x2="192" y2="257"/> <circle style="stroke-width:1" cx="173" cy="305" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="165" y="313" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">A</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="192" y1="257" x2="192" y2="226"/> <circle style="stroke-width:1" cx="192" cy="257" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="184" y="265" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="192" y1="226" x2="192" y2="195"/> <circle style="stroke-width:1" cx="192" cy="226" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="184" y="234" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="192" y1="195" x2="192" y2="164"/> <circle style="stroke-width:1" cx="192" cy="195" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="184" y="203" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="192" y1="164" x2="166" y2="137"/> <line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="192" y1="164" x2="81" y2="164"/> <rect x="66" y="152" width="30" height="24" fill="rgb(255,255,255)" stroke="rgb(255,255,255)"/> <text x="66" y="172" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">10</text> <circle style="stroke-width:1" cx="192" cy="164" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="184" y="172" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="166" y1="137" x2="154" y2="99"/> <circle style="stroke-width:1" cx="166" cy="137" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="158" y="145" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="154" y1="99" x2="166" y2="60"/> <circle style="stroke-width:1" cx="154" cy="99" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="146" y="107" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="166" y1="60" x2="199" y2="36"/> <circle style="stroke-width:1" cx="166" cy="60" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="158" y="68" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="199" y1="36" x2="240" y2="36"/> <circle style="stroke-width:1" cx="199" cy="36" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="191" y="44" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="240" y1="36" x2="273" y2="60"/> <circle style="stroke-width:1" cx="240" cy="36" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="232" y="44" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">A</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="273" y1="60" x2="285" y2="99"/> <circle style="stroke-width:1" cx="273" cy="60" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="265" y="68" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="285" y1="99" x2="273" y2="137"/> <circle style="stroke-width:1" cx="285" cy="99" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="277" y="107" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">C</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="273" y1="137" x2="247" y2="164"/> <circle style="stroke-width:1" cx="273" cy="137" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="265" y="145" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="247" y1="164" x2="247" y2="195"/> <circle style="stroke-width:1" cx="247" cy="164" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="239" y="172" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="247" y1="195" x2="247" y2="226"/> <line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="247" y1="195" x2="358" y2="195"/> <rect x="343" y="183" width="30" height="24" fill="rgb(255,255,255)" stroke="rgb(255,255,255)"/> <text x="343" y="203" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">20</text> <circle style="stroke-width:1" cx="247" cy="195" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="239" y="203" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">U</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="247" y1="226" x2="247" y2="257"/> <circle style="stroke-width:1" cx="247" cy="226" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="239" y="234" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">A</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="247" y1="257" x2="268" y2="305"/> <circle style="stroke-width:1" cx="247" cy="257" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="239" y="265" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="268" y1="305" x2="248" y2="352"/> <circle style="stroke-width:1" cx="268" cy="305" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="260" y="313" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="248" y1="352" x2="248" y2="383"/> <circle style="stroke-width:1" cx="248" cy="352" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="240" y="360" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">A</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="248" y1="383" x2="248" y2="414"/> <circle style="stroke-width:1" cx="248" cy="383" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="240" y="391" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">C</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="248" y1="414" x2="248" y2="445"/> <circle style="stroke-width:1" cx="248" cy="414" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="240" y="422" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<line style="fill:none;stroke-width:1" stroke="rgb(0,0,0)" x1="248" y1="445" x2="248" y2="476"/> <circle style="stroke-width:1" cx="248" cy="445" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="240" y="453" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">G</text>
+<circle style="stroke-width:1" cx="248" cy="476" r="12" fill="rgb(255,255,255)" stroke="rgb(0,0,0)"/> <text x="240" y="484" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">C</text>
+</g>
+<g font-size="16">
+<text x="36" y="892" fill="rgb(0,0,0)" stroke="rgb(0,0,0)">ENERGY = -7.1  21 at base # 6748 molecular...</text>
+</g>
+</svg>

@@ -1,0 +1,57 @@
+Beacons marked with a "*" are too structured or show a high degree of self-complementarity, and therefore have no svg file.
+1 MB sequence at base number 6201 is:  CGAGCGUGUGUGUGUGUGUGUGUGGGCUCG
+2 MB sequence at base number 9385 is:  CGCGAUUGUGUGGUGAUGUGUGGUGUCGCG
+*3 MB sequence at base number 9386 is:  CGCCAUUGUGUGGUGAUGUGUGGUGGCG
+*4 MB sequence at base number 9387 is:  CGCGAUAUUGUGUGGUGAUGUGUGGUCGCG
+5 MB sequence at base number 9388 is:  CGAGCGUAUUGUGUGGUGAUGUGUGGCUCG
+*6 MB sequence at base number 9389 is:  CGCGAGGUAUUGUGUGGUGAUGUGUUCGCG
+*7 MB sequence at base number 11736 is:  CGCGAGUGUUGGGUGUAUUUUGGGUUCGCG
+8 MB sequence at base number 11737 is:  CGCGAUGUGUUGGGUGUAUUUUGGGUCGCG
+9 MB sequence at base number 11738 is:  CGAGCGUGUGUUGGGUGUAUUUUGGGCUCG
+*10 MB sequence at base number 11735 is:  GCCGUGUUGGGUGUAUUUUGGGUACGGC
+11 MB sequence at base number 8051 is:  CGACGGGAAUGGAAUGAGACGGAUACGUCG
+12 MB sequence at base number 8050 is:  CGACGGAAUGGAAUGAGACGGAUAACGUCG
+13 MB sequence at base number 8048 is:  CGCCAUGGAAUGAGACGGAUAAUUGGCG
+14 MB sequence at base number 8049 is:  CGCCAAUGGAAUGAGACGGAUAAUGGCG
+15 MB sequence at base number 9390 is:  CGCGAUGGUAUUGUGUGGUGAUGUGUCGCG
+*16 MB sequence at base number 8047 is:  CGACGUGGAAUGAGACGGAUAAUUUCGUCG
+17 MB sequence at base number 9406 is:  GCACGUUUGGUUGGUAUUGUAUGGUCGUGC
+*18 MB sequence at base number 9391 is:  CGCCAUGGUAUUGUGUGGUGAUGUGGCG
+*19 MB sequence at base number 11734 is:  CGCGAGUUGGGUGUAUUUUGGGUAUUCGCG
+*20 MB sequence at base number 8046 is:  CGACGGGAAUGAGACGGAUAAUUUGCGUCG
+21 MB sequence at base number 6748 is:  GCCGUAUUGGGUUUAUCGUUAGGACGGC
+22 MB sequence at base number 6747 is:  CCGAUUGGGUUUAUCGUUAGGAUCGG
+*23 MB sequence at base number 6749 is:  CGCGAUUAUUGGGUUUAUCGUUAGGUCGCG
+24 MB sequence at base number 5348 is:  CGCGAUGUAUAGGUGGAGGGUUCUGUCGCG
+25 MB sequence at base number 5349 is:  CGCCAUGUAUAGGUGGAGGGUUCUGGCG
+26 MB sequence at base number 8501 is:  GCACGUUGUAUGUAUGUGGGUUAGCCGUGC
+27 MB sequence at base number 8502 is:  GCACGAUUGUAUGUAUGUGGGUUAGCGUGC
+28 MB sequence at base number 8530 is:  CGAGCGCGGUGUAUGUGGUAGUAUGGCUCG
+29 MB sequence at base number 8529 is:  CGAGCCGGUGUAUGUGGUAGUAUGUGCUCG
+30 MB sequence at base number 9405 is:  GCCGUUGGUUGGUAUUGUAUGGUACGGC
+31 MB sequence at base number 8536 is:  CGCGAGUGAGAGCGGUGUAUGUGGUUCGCG
+32 MB sequence at base number 9394 is:  GCCGUGUAUGGUAUUGUGUGGUGACGGC
+33 MB sequence at base number 9393 is:  CGCGAGUAUGGUAUUGUGUGGUGAUUCGCG
+*34 MB sequence at base number 9392 is:  CGCGAUAUGGUAUUGUGUGGUGAUGUCGCG
+35 MB sequence at base number 9395 is:  CGCGAUUGUAUGGUAUUGUGUGGUGUCGCG
+*36 MB sequence at base number 9396 is:  CGCCAUUGUAUGGUAUUGUGUGGUGGCG
+*37 MB sequence at base number 8534 is:  CGAGCGAGAGCGGUGUAUGUGGUAGGCUCG
+*38 MB sequence at base number 8535 is:  CCGGUGAGAGCGGUGUAUGUGGUACCGG
+*39 MB sequence at base number 8533 is:  CGCCAGAGCGGUGUAUGUGGUAGUGGCG
+40 MB sequence at base number 8532 is:  CGAGCGAGCGGUGUAUGUGGUAGUAGCUCG
+41 MB sequence at base number 8531 is:  CGCCAGCGGUGUAUGUGGUAGUAUGGCG
+*42 MB sequence at base number 9397 is:  CGCGAUAUUGUAUGGUAUUGUGUGGUCGCG
+*43 MB sequence at base number 8500 is:  CGCGAUGUAUGUAUGUGGGUUAGCGUCGCG
+44 MB sequence at base number 4205 is:  CGCGAGUUUAUUGUGUGGGACUGUUUCGCG
+45 MB sequence at base number 8288 is:  CGACGACAUUUGGGUUUUUUUGAGCCGUCG
+46 MB sequence at base number 5347 is:  CGACGGUAUAGGUGGAGGGUUCUGGCGUCG
+47 MB sequence at base number 8499 is:  CGCGAGUAUGUAUGUGGGUUAGCGUUCGCG
+*48 MB sequence at base number 8540 is:  CGAGCGUACGUGAGAGCGGUGUAUGGCUCG
+*49 MB sequence at base number 8541 is:  CGAGCUGUACGUGAGAGCGGUGUAUGCUCG
+50 MB sequence at base number 2071 is:  CGCCAGAGUUUGGUUUUGGUUGUUGGCG
+Results for "C:\Users\aviro\Documents\Code\Misc\Summers\Summer 2025 - RNA\Code\RNASuite\src\rnaprobes\tests\test_files\example_super_large.ct" using 20 as probe length, 
+for 50 probes, and blast choice = n, and for a target region between 1 and 12181 nucleotides:  
+	1. Total number of possible probes =  12162
+	2. Number of probes that have a GC content between 30% and 56% =  6630
+	3. Number of probes that meet GC and energetic criteria =  3487
+	4. Number of probes that have an ss-count fraction larger than 0.5 =  4374

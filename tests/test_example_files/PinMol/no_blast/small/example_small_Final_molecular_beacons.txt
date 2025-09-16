@@ -1,0 +1,42 @@
+Beacons marked with a "*" are too structured or show a high degree of self-complementarity, and therefore have no svg file.
+1 MB sequence at base number 8 is:  CGAGCCGUGUCUuCCAuUUCCACCAGCUCG
+2 MB sequence at base number 7 is:  CGAGCGUGUCUuCCAuUUCCACCAAGCUCG
+3 MB sequence at base number 19 is:  CGAGCgUUAAGAGUAUCGUGUCUuCGCUCG
+4 MB sequence at base number 9 is:  CGAGCUCGUGUCUuCCAuUUCCACCGCUCG
+5 MB sequence at base number 6 is:  GCCGUGUCUuCCAuUUCCACCAAACGGC
+6 MB sequence at base number 15 is:  CGCCAGAGUAUCGUGUCUuCCAuUGGCG
+7 MB sequence at base number 10 is:  CGAGCAUCGUGUCUuCCAuUUCCACGCUCG
+8 MB sequence at base number 14 is:  CGCGAGAGUAUCGUGUCUuCCAuUUUCGCG
+*9 MB sequence at base number 18 is:  CGAGCUUAAGAGUAUCGUGUCUuCCGCUCG
+10 MB sequence at base number 16 is:  CGAGCAAGAGUAUCGUGUCUuCCAuGCUCG
+11 MB sequence at base number 22 is:  CGAGCCAUgUUAAGAGUAUCGUGUCGCUCG
+12 MB sequence at base number 5 is:  CGAGCGUCUuCCAuUUCCACCAAAAGCUCG
+13 MB sequence at base number 11 is:  GCCGUAUCGUGUCUuCCAuUUCCACGGC
+14 MB sequence at base number 4 is:  CGAGCUCUuCCAuUUCCACCAAAAUGCUCG
+15 MB sequence at base number 13 is:  CGAGCAGUAUCGUGUCUuCCAuUUCGCUCG
+*16 MB sequence at base number 17 is:  GCCGUAAGAGUAUCGUGUCUuCCACGGC
+17 MB sequence at base number 3 is:  CGAGCCUuCCAuUUCCACCAAAAUAGCUCG
+18 MB sequence at base number 12 is:  CGAGGUAUCGUGUCUuCCAuUUCCCUCG
+19 MB sequence at base number 2 is:  CGCGAUuCCAuUUCCACCAAAAUAGUCGCG
+20 MB sequence at base number 1 is:  GCACGuCCAuUUCCACCAAAAUAGCCGUGC
+21 MB sequence at base number 55 is:  CGACGAAAGGACUUGAACCUUCAUACGUCG
+22 MB sequence at base number 49 is:  GCACGCUUGAACCUUCAUACUGUAACGUGC
+23 MB sequence at base number 54 is:  CGACGAAGGACUUGAACCUUCAUACCGUCG
+*24 MB sequence at base number 56 is:  CGACGUAAAGGACUUGAACCUUCAUCGUCG
+25 MB sequence at base number 46 is:  CGCGAGAACCUUCAUACUGUAAAGUUCGCG
+26 MB sequence at base number 64 is:  CGACGGUGCUAUUUAAAGGACUUGACGUCG
+*27 MB sequence at base number 57 is:  GCCGUUAAAGGACUUGAACCUUCACGGC
+28 MB sequence at base number 58 is:  CGACGUUUAAAGGACUUGAACCUUCCGUCG
+29 MB sequence at base number 47 is:  CGCGAUGAACCUUCAUACUGUAAAGUCGCG
+30 MB sequence at base number 50 is:  GCACGACUUGAACCUUCAUACUGUACGUGC
+31 MB sequence at base number 61 is:  CGACGCUAUUUAAAGGACUUGAACCCGUCG
+*32 MB sequence at base number 53 is:  CCGAGGACUUGAACCUUCAUACUCGG
+33 MB sequence at base number 52 is:  CGACGGGACUUGAACCUUCAUACUGCGUCG
+34 MB sequence at base number 51 is:  CGCGAGACUUGAACCUUCAUACUGUUCGCG
+35 MB sequence at base number 62 is:  CGAGGCUAUUUAAAGGACUUGAACCUCG
+Results for "C:\Users\aviro\Documents\Code\Misc\Summers\Summer 2025 - RNA\Code\RNASuite\src\rnaprobes\tests\test_files\example_small.ct" using 20 as probe length, 
+for 35 probes, and blast choice = n, and for a target region between 1 and 85 nucleotides:  
+	1. Total number of possible probes =  66
+	2. Number of probes that have a GC content between 30% and 56% =  37
+	3. Number of probes that meet GC and energetic criteria =  35
+	4. Number of probes that have an ss-count fraction larger than 0.5 =  36

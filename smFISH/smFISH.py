@@ -15,7 +15,7 @@ from ..RNAProbesUtil import run_command_line, ProgramObject
 from ..RNAUtil import RNAStructureWrapper, get_ct_nucleotide_length
 from ..smFISH.ReverseDijkstra import ReverseDijkstra
 from ..util import path_string, path_arg, input_bool, validate_arg, parse_file_input, input_path_string, \
-    format_timedelta, validate_doesnt_throw
+    format_timedelta, validate_doesnt_throw, directory_arg
 
 undscr = ("->" * 40) + "\n"
 copyright_msg = (("\n" * 6) +
@@ -92,7 +92,7 @@ def run(args="", from_command_line = True):
     arguments = parse_arguments(args, from_command_line=from_command_line)
     if should_print(arguments): print(copyright_msg)
 
-    ct_filein = input_path_string(".ct", msg='Enter the ct file path and name: ', fail_message='This file is invalid (either does not exist or is not a .ct file). Please input a valid .ct file: ',
+    ct_filein = arguments.csv_file or input_path_string(".ct", msg='Enter the ct file path and name: ', fail_message='This file is invalid (either does not exist or is not a .ct file). Please input a valid .ct file: ',
                         initial_value= arguments.file, retry_if_fail=arguments.from_command_line)
 
     program_object = calculate_result(ct_filein, arguments)
@@ -154,7 +154,7 @@ def get_filtered_df(df: DataFrame, program_object: ProgramObject) -> DataFrame:
 
     return filtered_df
 
-def get_best_possible_probe_set(filein, program_object: ProgramObject) -> DataFrame:
+def get_best_possible_probe_set(filein: str | Path, program_object: ProgramObject) -> DataFrame:
     if not program_object.arguments.csv_file:
         matching_probes = get_matching_probes(filein, program_object)
     else:
@@ -168,7 +168,7 @@ def get_best_possible_probe_set(filein, program_object: ProgramObject) -> DataFr
     return filtered_df
 
 def get_best_probes(df: DataFrame, program_object: ProgramObject, count=PROBE_RETURN_COUNT) -> DataFrame:
-    probes = df.sort_values(["Hybeff"], ignore_index=True, kind="stable").head(count)
+    probes = df.nlargest(count, ["Hybeff"]).sort_index()
     probes.to_csv(program_object.save_buffer(f"[fname]_best_{count}_probes.csv"), index=False, float_format=f'%.{PRECISION}g')
     if should_print(program_object.arguments): print(f"{len(df)} probes found." + (f" Choosing the best {count}" if len(df) > count else ""))
     return probes
@@ -250,7 +250,7 @@ def create_arg_parser():
     group.add_argument("-cf", "--csv-file", type=functools.partial(path_string, suffix=".csv"),
                        help='For speed if smFISH was previously ran on a ct file. Input a previously outputted "*_possible_matching_probes.csv"')  # for testing, speed
 
-    parser.add_argument("-o", "--output-dir", type=functools.partial(path_arg, suffix=""))
+    parser.add_argument("-o", "--output-dir", type=directory_arg)
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-q", "--quiet", action="store_true")
     parser.add_argument("-d", "--delete-ct", action="store_true", help="Remove the ct input file. Not recommended unless running from a server")

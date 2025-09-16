@@ -12,7 +12,8 @@ from pandas import DataFrame
 
 from ..RNAProbesUtil import BufferedProgramObject, ProgramObject, run_command_line
 from ..util import (path_string, validate_arg, parse_file_input,
-                      DiscontinuousRange, input_range, validate_doesnt_throw, input_path, input_path_string, path_arg)
+                    DiscontinuousRange, input_range, validate_doesnt_throw, input_path, input_path_string, path_arg,
+                    directory_arg)
 from ..RNAUtil import CT_to_sscount_df
 
 undscr = ("->" * 40)
@@ -176,7 +177,7 @@ def create_arg_parser():
         prog='TDOFinder',
         description='Triplex-forming oligonucleotide (TFO) target designer for RNA.')
     parser.add_argument("-f", "--file", type=path_string)
-    parser.add_argument("-o", "--output-dir", type=functools.partial(path_arg, suffix=""))
+    parser.add_argument("-o", "--output-dir", type=directory_arg)
     parser.add_argument("-p", "--probe-length", type=DiscontinuousRange.template(probeMin, probeMax+1, True),
                         metavar=f"[{probeMin}-{probeMax}]",
                         help=f'The length range of TFO probes, {probeMin}-{probeMax} inclusive')

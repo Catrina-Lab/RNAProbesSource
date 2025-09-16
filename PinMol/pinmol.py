@@ -21,7 +21,7 @@ from ..RNAProbesUtil import ProgramObject, run_command_line
 from ..util import (input_int_in_range, bounded_int, path_string, path_arg, remove_if_exists,
                     remove_files, validate_arg, validate_range_arg, parse_file_input, ValidationError, input_value,
                     input_path_string, input_path, email_arg, input_bool, input_email, input_value_set,
-                    validate_doesnt_throw, value_set_arg, value_set_mapper)
+                    validate_doesnt_throw, value_set_arg, value_set_mapper, directory_arg)
 from ..RNAUtil import CT_to_sscount_df, RNAStructureWrapper
 
 undscr = ("->" * 40) + "\n"
@@ -523,7 +523,7 @@ def create_arg_parser():
         prog='PinMol',
         description='Molecular beacon designer for live-cell imaging of mRNA targets.')
     parser.add_argument("-f", "--file", type=path_string)
-    parser.add_argument("-o", "--output-dir", type=functools.partial(path_arg, suffix=""))
+    parser.add_argument("-o", "--output-dir", type=directory_arg)
     parser.add_argument("-p", "--probes", type=functools.partial(bounded_int, min=probeMin, max=probeMax),
                         metavar=f"[{probeMin}-{probeMax}]",
                         help=f'The length of PinMol probes, {probeMin}-{probeMax} inclusive')

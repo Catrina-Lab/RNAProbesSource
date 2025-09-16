@@ -10,7 +10,7 @@ from .TFOFinder import tfofinder
 from .smFISH import smFISH
 from .util import input_value
 
-
+dummy_program = "skip_run"
 programs = {
     "tfofinder": tfofinder.run,
     "pinmol": pinmol.run,
@@ -18,9 +18,12 @@ programs = {
 }
 def run(args: list):
     program = input_value("Input a program (either tfofinder, pinmol, or smfish): ", str.lower,
-                          lambda program: program in programs.keys(), retry_if_fail=len(args) >= 1,
+                          lambda program: program in programs.keys() or program == dummy_program, retry_if_fail=True,
                           initial_value=args[0].lower() if len(args) >= 1 else None)
+    if program == dummy_program:
+        return
     run = programs[program]
     run_command_line(run, args[1:])
+
 if __name__ == "__main__":
     run(sys.argv[1:])

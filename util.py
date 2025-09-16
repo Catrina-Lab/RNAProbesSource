@@ -229,19 +229,31 @@ def bounded_int(string, min=None, max=None, extra_predicate=lambda x: False, all
         raise argparse.ArgumentTypeError(
             f'Value not in range {min or "-∞"}-{max or "∞"}. Please either keep it in range or leave it out.')
 
-def path_string(string, suffix=".ct"):
+def path_string(string, suffix=".ct", must_exist: bool = True):
     path = Path(string).resolve()
-    if path.exists() and path.suffix in suffix:  # in returns true if string ==
+    if (not must_exist or path.exists()) and path.suffix in suffix:  # in returns true if string ==
         return str(path)
     else:
         raise argparse.ArgumentTypeError(f'Invalid file given. File must be an existing {suffix} file')
 
-def path_arg(string, suffix=".ct"):
+def path_arg(string, suffix=".ct", must_exist: bool = True):
     path = Path(string).resolve()
-    if path.exists() and path.suffix in suffix:  # in returns true if string ==
+    if (not must_exist or path.exists()) and path.suffix in suffix:  # in returns true if string ==
         return path
     else:
         raise argparse.ArgumentTypeError(f'Invalid file given. File must be an existing {suffix} file')
+
+def directory_arg(string, create_if_missing: bool = True):
+    path = path_arg(string, suffix="", must_exist=not create_if_missing)
+    if create_if_missing:
+        path.mkdir(parents=True, exist_ok=True)
+    return path
+
+def directory_string(string, create_if_missing: bool = True):
+    string = path_string(string, suffix="", must_exist=not create_if_missing)
+    if create_if_missing:
+        Path(string).mkdir(parents=True, exist_ok=True)
+    return string
 
 _email_regex = re.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
 def email_arg(string, email_regex: re.Pattern = _email_regex):
